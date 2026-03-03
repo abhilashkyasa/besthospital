@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: best-hospital
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: best-hospital
+  template:
+    metadata:
+      labels:
+        app: best-hospital
+    spec:
+      containers:
+      - name: best-hospital
+        image: host.docker.internal:8083/best_hospital:4
+        ports:
+        - containerPort: 8081
