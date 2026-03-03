@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        IMAGE_NAME = "best-hospital-app"
+        TAG = "${BUILD_NUMBER}"
+    }
+
     stages {
 
         stage('Checkout') {
@@ -9,10 +14,17 @@ pipeline {
             }
         }
 
-        stage('Build & Unit Test') {
+        stage('Build & Package') {
             steps {
-                bat 'mvn clean test'
+                bat 'mvn clean package -DskipTests'
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t %IMAGE_NAME%:%TAG% .'
+            }
+        }
+
     }
 }
